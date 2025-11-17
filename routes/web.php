@@ -2,10 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 // Redirect password reset links to frontend reset page
 Route::get('/password/reset/{token}', function ($token) {
     $frontend = rtrim(env('FRONTEND_URL', 'http://localhost:3000'), '/');
@@ -17,7 +13,10 @@ Route::get('/password/reset/{token}', function ($token) {
     return redirect()->away($url);
 })->name('password.reset');
 
-// Swagger docs shortcut
 Route::get('/docs', function () {
-    return redirect('/api/documentation');
-});
+    // Nếu bạn muốn có UI luôn:
+    return view('l5-swagger::index');
+
+    // Hoặc nếu chỉ cần cho nó có route, không cần UI:
+    // return response()->json(['message' => 'API docs UI is disabled on this environment.']);
+})->name('l5-swagger.default.docs');    
